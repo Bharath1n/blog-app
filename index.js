@@ -47,6 +47,10 @@ app.get("/delete/:id", (req, res) => {
     res.redirect("/");
 });
 
+export default (req, res) => {
+    app(req, res);
+};
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
