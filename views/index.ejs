@@ -1,0 +1,25 @@
+<%-include("partials/header.ejs") %>
+      <div  class="main-content">
+          <h1>Blog Posts</h1>
+    </div>
+    <%if(locals.posts.length === 0) { %> 
+      <div>
+          <div class="back-img"></div>
+          <a href="/new"><h3>Create New Post</h3></a>
+      </div>
+    <%  }
+    else {%>
+          <% posts.forEach((post, index) => { %>
+            <div class="blog">
+                  <h2><%= post.title %></h2>
+                  <p><%= post.content %></p>
+                  <a href="/edit/<%= index %>">Edit</a>
+                  <br>
+                  <a class="red" href="/delete/<%= index %>">Delete</a>
+                </div>
+          <% }); %>
+          <a class="end" href="/new"><h3>Create New Post</h3></a>
+      </div>
+   <% } %>
+   
+<%-include("partials/footer.ejs") %>
