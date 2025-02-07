@@ -1,9 +1,11 @@
 import express from "express";
 import bodyParser from "body-parser";
+import path from "path";
 
 const app = express();
 const port = 3000;
 
+app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 let posts = [];
@@ -13,7 +15,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/new", (req,res) => {
-    res.render("new.ejs");
+    res.render("new");
 });
 
 app.post("/new", (req, res) => {
@@ -25,7 +27,7 @@ app.post("/new", (req, res) => {
 app.get("/edit/:id", (req, res) => {
     const postId = parseInt(req.params.id);
     if (postId >= 0 && postId < posts.length) {
-        res.render("edit.ejs", { post: posts[postId], postId });
+        res.render("edit", { post: posts[postId], postId });
     } else {
         res.status(404).send("Post not found");
     }
@@ -40,7 +42,8 @@ app.post("/edit/:id", (req, res) => {
 });
 
 app.get("/delete/:id", (req, res) => {
-    posts.splice(req.params.id, 1);
+    const postId = parseInt(req.params.id);
+    posts = posts.filter((_, index) => index !== postId);
     res.redirect("/");
 });
 
