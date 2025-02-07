@@ -55,9 +55,9 @@ app.get('/delete/:id', (req, res) => {
     }
     res.redirect('/');
 });
-export default function handler(req, res) {
-    app(req, res);
-}
+import { createServer } from 'http';
+const server = createServer(app);
+export default server;
 
 if (!process.env.VERCEL) {
     app.listen(port, () => {
