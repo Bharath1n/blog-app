@@ -13,6 +13,8 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+
 let posts = [];
 
 app.get('/', (req, res) => {
@@ -41,23 +43,24 @@ app.get('/edit/:id', (req, res) => {
 app.post('/edit/:id', (req, res) => {
     const postId = parseInt(req.params.id);
     if (postId >= 0 && postId < posts.length) {
-        posts[postId] = { id: postId, title: req.body.title, content: req.body.content };
+        posts[postId] = { title: req.body.title, content: req.body.content };
     }
     res.redirect('/');
 });
 
 app.get('/delete/:id', (req, res) => {
-    const postId = parseInt(req.params.id);
-    posts = posts.filter((_, index) => index !== postId);
+    const postId = parseInt(req.params.id, 10);
+    if (postId >= 0 && postId < posts.length) {
+        posts.splice(postId, 1);
+    }
     res.redirect('/');
 });
-
-export default (req, res) => {  //for vercel deployment
+export default function handler(req, res) {
     app(req, res);
-};
+}
 
-//for local deployment 
-
-// app.listen(port, () => {
-//     console.log(`Server is running on http://localhost:${port}`);
-// });
+if (!process.env.VERCEL) {
+    app.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
+    });
+}
