@@ -17,13 +17,13 @@ A simple blog application built using Node.js, Express, and EJS for templating.
 ### Steps to Run the Blog App on Your Local Machine
 
 1️⃣ Clone the Repository
-    git clone https://github.com/yourusername/blog-app.git
-    cd blog-app
+- git clone url
+- cd blog-app
 2️⃣ Install Dependencies
-    npm install
-3️⃣ Run the Application
-    node index.js
-    or if using nodemon:
-    nodemon index.js
-4️⃣ Open in Browser
-    Visit: http://localhost:3000
+- npm install
+3️⃣ Start the Server
+- node index.js
+- or if using nodemon:
+- nodemon index.js
+4️⃣ Open Your Web Browser
+- Navigate to `http://localhost:3000`
