@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
 import { fileURLToPath } from 'url'; 
+import multer from 'multer';
 
 const app = express();
 const port = 3000;
@@ -15,6 +16,18 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.get('/favicon.ico', (req, res) => res.status(204).end());
 
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb){
+        cb(null, 'public/uploads');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname);
+    }
+});
+
+
+const upload = multer({ storage: storage });
 let posts = [];
 
 app.get('/', (req, res) => {
@@ -25,9 +38,13 @@ app.get('/new', (req, res) => {
     res.render('new');
 });
 
-app.post('/new', (req, res) => {
+app.post('/new', upload.single('image'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).send("No file uploaded.");
+    }
     const { title, content } = req.body;
-    posts.push({ title, content });
+    const imagePath = 'uploads/' + req.file.filename;
+    posts.push({ title, content, image : imagePath });
     res.redirect('/');
 });
 
@@ -40,10 +57,14 @@ app.get('/edit/:id', (req, res) => {
     }
 });
 
-app.post('/edit/:id', (req, res) => {
+app.post('/edit/:id', upload.single('image'), (req, res) => {
     const postId = parseInt(req.params.id);
     if (postId >= 0 && postId < posts.length) {
-        posts[postId] = { title: req.body.title, content: req.body.content };
+        posts[postId] = { 
+            title: req.body.title,
+            content: req.body.content,
+            image: req.file ? `uploads/${req.file.filename}` : posts[postId].image
+        };
     }
     res.redirect('/');
 });

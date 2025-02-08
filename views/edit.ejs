@@ -1,6 +1,6 @@
 <%-include("partials/header.ejs") %>
 <h3>Edit Post</h3>
-<form action="/edit/<%= postId %>" method="POST">
+<form action="/edit/<%= postId %>" method="POST" enctype="multipart/form-data" >
     <div>
         <h4>Edit Your Post-Title below</h4>
         <input type="text" name="title" value="<%= post.title %>" required>
@@ -8,6 +8,14 @@
     <div>
         <h4>Edit Your Post-Content below</h4>
         <textarea name="content" required><%= post.content %></textarea>
+    </div>
+    <div>
+        <h4>Edit Post Image (Optional)</h4>
+        <input type="file" name="image" accept="image/*">
+        <% if (post.image) { %>
+            <p>Current Image:</p>
+            <img src="/<%= post.image %>" alt="Current Post Image" style="width: 150px; height: auto;">
+        <% } %>
     </div>
     <div>
         <button type="submit">Update Post</button>

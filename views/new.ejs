@@ -1,6 +1,6 @@
 <%-include("partials/header.ejs") %>
-<h3>New Post</h3>
-<form action="/new" method="POST">
+<h3>New Post</h3><div class="new-post">
+<form action="/new" method="POST" enctype="multipart/form-data">
         <div>
                 <h4>Write Your Post-Title below</h4>
                 <input type="text" name="title" placeholder="Post Title" required>
@@ -10,8 +10,13 @@
                 <textarea name="content" placeholder="Post Content" required></textarea>
         </div>
         <div>
+                <h4>Upload an Image</h4>
+                <input type="file" name="image" accept="image/*">
+        </div>
+        <div>
                 <button type="submit">Create Post</button>
         </div>
 </form>
+</div>
 <a href="/"><button >Back to Home</button></a>
 <%-include("partials/footer.ejs") %>
